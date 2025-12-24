@@ -15,12 +15,11 @@
             font-family: 'Lato', sans-serif;
             background-color: #1a1b1e;
             color: #e5e7eb;
-            -webkit-tap-highlight-color: transparent; /* Elimina el flash azul en móviles */
+            -webkit-tap-highlight-color: transparent;
         }
         h1, h2, h3, .fantasy-font {
             font-family: 'Cinzel', serif;
         }
-        /* Scrollbar oculta para la navegación móvil */
         .hide-scrollbar::-webkit-scrollbar {
             display: none;
         }
@@ -91,6 +90,21 @@
         const IconGavel = ({ size = 20, className }) => (
              <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M14 13l-7.5 7.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0a2.12 2.12 0 0 1 0-3L11 10"></path><path d="m16 16 6-6"></path><path d="m8 8 6-6"></path><path d="m9 7 8 8"></path><path d="m21 11-8-8"></path></svg>
         );
+        const IconFlame = ({ size = 16, className }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.113.434-2.16 1.146-2.955A2.97 2.97 0 0 0 8.5 14.5z"></path></svg>
+        );
+        const IconSparkles = ({ size = 16, className }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+        );
+        const IconStar = ({ size = 20, className }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        );
+        const IconHome = ({ size = 20, className }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        );
+        const IconScroll = ({ size = 16, className }) => (
+            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M8 2h8a4 4 0 0 1 4 4v12a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V6a4 4 0 0 1 4-4Z"/><path d="M8 22v-6a4 4 0 0 1 4-4h8"/></svg>
+        );
 
         // --- DATOS ---
 
@@ -110,7 +124,7 @@
             bonusActions: [
                 { name: "Ataque mano torpe", desc: "Si usas dos armas ligeras, atacas con la segunda como Bonus." },
                 { name: "Hechizos Rápidos", desc: "Ej. Paso Brumoso, Palabra de Curación." },
-                { name: "Rasgos de Clase", desc: "Furia, Inspiración de Bardo, Acción Astuta." }
+                { name: "Rasgos de Clase", desc: "Artes Marciales (Monje), Paso Brumoso." }
             ],
             bg3Differences: [
                 { title: "Pociones", raw: "ACCIÓN completa para beberla.", bg3: "Acción Adicional en BG3." },
@@ -121,173 +135,271 @@
             ]
         };
 
+        const featsData = [
+            { name: "Alerta (Alert)", desc: "+5 Iniciativa. No puedes ser sorprendido. Criaturas ocultas no tienen ventaja contra ti.", type: "General" },
+            { name: "Conjurador de Guerra (War Caster)", desc: "Ventaja en CON para concentración. Conjura con manos ocupadas. Puedes usar Reacción para lanzar un hechizo a quien te provoque ataque de oportunidad.", type: "Clérigo/Mago" },
+            { name: "Móvil (Mobile)", desc: "+10 pies de velocidad. Si atacas a una criatura, no provoca ataques de oportunidad contra ti el resto del turno. Dash ignora terreno difícil.", type: "Monje (God Tier)" },
+            { name: "Iniciado Mágico", desc: "Aprendes 2 trucos y 1 hechizo de nivel 1 de otra clase (1 uso/largo).", type: "General" },
+            { name: "Afortunado (Lucky)", desc: "3 puntos de suerte/día. Gástalos para tirar un d20 extra en ataques/saves/skills o hacer que un enemigo rerolee su ataque.", type: "General" },
+            { name: "Resiliente (Resilient)", desc: "+1 a una característica y obtienes competencia en esa tirada de salvación (Ej. CON para magos).", type: "Mago/Clérigo" },
+            { name: "Observador (Observant)", desc: "+1 INT o SAB. +5 a tu Percepción Pasiva e Investigación Pasiva. Lees labios.", type: "SAB/INT" },
+            { name: "Duro (Tough)", desc: "+2 HP por nivel actual y futuro. (Ej. a nivel 4 ganas 8 HP de golpe).", type: "General" },
+            { name: "Centinela (Sentinel)", desc: "Si golpean a un aliado a 5 pies, puedes atacar como reacción. Si golpeas oportunidad, su vel baja a 0.", type: "Combate" },
+            { name: "Curandero (Healer)", desc: "Kit de Sanador cura 1d6 + 4 + Nivel (1 vez por persona/descanso).", type: "Soporte" },
+            { name: "Atacante Salvaje", desc: "1 vez por turno rerolling el daño del arma y te quedas el mejor.", type: "Combate" },
+            { name: "Maestro de Escudos", desc: "Si atacas, puedes empujar con Bonus. Suma bono escudo a Saves DEX.", type: "Combate" }
+        ];
+
         const storyData = [
             {
-                chapter: "Cap 1: Emboscada",
-                summary: "La escolta de Gundren. Emboscada Goblin y Cueva Cragmaw.",
+                chapter: "Capítulo 1: Las Flechas Goblin",
+                summary: "El camino a Phandalin se vuelve peligroso. Los PJs deben rescatar a Sildar y descubrir el destino de Gundren.",
                 keyEvents: [
-                    "Camino: Emboscada (4 Goblins).",
-                    "Rastro: Seguir huellas a la Cueva.",
-                    "Cueva: Rescatar a Sildar Hallwinter.",
-                    "Klarg: Líder osgo (tiene tesoro).",
-                    "Revelación: Gundren en Castillo Cragmaw."
+                    { title: "El Gancho", desc: "Contratados en Neverwinter por Gundren Rockseeker. 10po cada uno. Gundren y Sildar van adelante." },
+                    { title: "La Emboscada", desc: "Caballos muertos bloquean el camino. 4 Goblins atacan (Sorpresa si PJs fallan Percepción vs Sigilo Goblin)." },
+                    { title: "El Rastro", desc: "CD 10 Supervivencia para seguir huellas hasta la guarida. Trampas en el camino (Cepo y Lazo)." },
+                    { title: "Cueva Cragmaw", desc: "Guardias afuera. Adentro: Lobos encadenados, el puente, la presa de agua (trampa de inundación)." },
+                    { title: "El Rescate", desc: "Sildar Hallwinter está en la cueva de Yeemik (Goblin). Yeemik quiere matar a Klarg. Negociación posible." },
+                    { title: "Jefe Klarg", desc: "Osgo brutal en la cueva principal. Tiene suministros robados del Escudo de León." }
+                ],
+                dmTips: [
+                    "Si los goblins ganan la emboscada, no matan a los PJs. Los dejan inconscientes y les roban el carro.",
+                    "Sildar sabe: Gundren tenía un mapa, fue llevado al Castillo Cragmaw, y los hermanos Rockseeker encontraron la entrada a la Mina Perdida.",
+                    "Klarg es muy fuerte (2d8 daño). Si sacas crítico, matas a un PJ lvl 1. Considera 'fudgear' el daño o que Klarg sea arrogante y no remate."
                 ]
             },
             {
-                chapter: "Cap 2: Phandalin",
-                summary: "Llegada al pueblo y los Marcas Rojas.",
+                chapter: "Capítulo 2: Phandalin (Resumen)",
+                summary: "Llegada al pueblo. Ve a la pestaña 'Pueblo' para ver todos los NPCs, misiones y secretos disponibles en el sandbox.",
                 keyEvents: [
-                    "Entrega: Barthen paga 10po c/u.",
-                    "Rumores: Marcas Rojas en Mansión Tresendar.",
-                    "Mansión: Entrada secreta (Carp).",
-                    "Nothic: Lee mentes, negocia con carne.",
-                    "Vara de Vidrio: Iarno Albrek (traidor)."
+                    { title: "Llegada", desc: "Entregar suministros a Barthen. Sildar busca a Iarno." },
+                    { title: "Los Marcas Rojas", desc: "Matones locales. Mataron a Thel Dendrar." },
+                    { title: "Mansión Tresendar", desc: "El Dungeon del pueblo. Vara de Vidrio está allí." }
+                ],
+                dmTips: [
+                    "Usa la pestaña 'Pueblo' para ver qué hace cada edificio.",
+                    "No les des todas las misiones el primer día. Deja que exploren."
                 ]
             },
             {
-                chapter: "Cap 3: La Telaraña",
-                summary: "Búsqueda del Castillo Cragmaw.",
+                chapter: "Capítulo 3: La Telaraña de la Araña",
+                summary: "Sandbox. Búsqueda del Castillo Cragmaw y limpieza de la región.",
                 keyEvents: [
-                    "Reidoth (Árbol Trueno): Conoce ubicación.",
-                    "Venomfang: Dragón Verde Joven (¡PELIGRO!).",
-                    "Castillo Cragmaw: Rey Grol y Mapa.",
-                    "Rescate: Salvar a Gundren."
+                    { title: "Buscando el Castillo", desc: "Nadie sabe dónde está. Necesitan preguntar a: Reidoth (Druida), Agatha (Banshee) o limpiar patrullas Goblin." },
+                    { title: "Árbol Trueno (Thundertree)", desc: "Pueblo en ruinas, zombies de ceniza y ramitas. Hogar de Reidoth." },
+                    { title: "Venomfang", desc: "Dragón Verde Joven en la torre. Manipulador y letal. Ofrece tesoro falso para que se vayan." },
+                    { title: "Castillo Cragmaw", desc: "Ruinas fortificadas. Rey Grol (Osgo) y Vhalak (Doppelganger drow). Tienen a Gundren y el Mapa." }
+                ],
+                dmTips: [
+                    "Cuidado con Venomfang. Su aliento (12d6) mata instantáneamente (TPK). Haz que sea social o que huya al 50% de vida.",
+                    "El Doppelganger en el Castillo puede hacerse pasar por Gundren si las cosas salen mal para emboscar a los PJs.",
+                    "Si se pierden, haz que una patrulla de Hobgoblins tenga un mapa aproximado."
                 ]
             },
             {
-                chapter: "Cap 4: Cueva Oleaje",
-                summary: "La Mina Perdida y la Forja.",
+                chapter: "Capítulo 4: La Cueva del Oleaje",
+                summary: "El Dungeon Crawl final. Magia salvaje, no-muertos y el enfrentamiento definitivo.",
                 keyEvents: [
-                    "Entrada: Cadáver de Tharden.",
-                    "Espectador: Guardián loco de la Forja.",
-                    "Mormesk: Espectro codicioso.",
-                    "Araña Negra: Nezznar (Jefe Final).",
-                    "Recompensa: 10% de la mina."
+                    { title: "Entrada", desc: "El cadáver de Tharden Rockseeker (hermano) en la entrada. Botas de saltar y rebotar." },
+                    { title: "El Espectador", desc: "Guardia flotante de la Forja de los Conjuros. Está loco, cree que la mina sigue funcionando." },
+                    { title: "Mormesk el Espectro", desc: "Mago no-muerto. Quiere tesoros y conocimiento. Puede ser un aliado temporal." },
+                    { title: "La Forja de los Conjuros", desc: "Llama verde mágica. Permite encantar armas temporalmente (+1)." },
+                    { title: "La Araña Negra (Nezznar)", desc: "Drow Mago. Pelea final con arañas gigantes. Quiere usar la forja." }
+                ],
+                dmTips: [
+                    "Nezznar es inteligente. Usará Invisibilidad y Sugestión. No peleará solo (usa arañas o doppelgangers).",
+                    "El techo de la cueva resuena con el mar (Oleaje). Úsalo para ambientación sonora.",
+                    "Recompensa final: 10% de las ganancias de la mina para siempre. ¡Los PJs son ricos!"
                 ]
             }
         ];
 
-        // DATOS DE CLASES (Resumidos para móvil)
+        const phandalinData = [
+            {
+                loc: "Posada Stonehill",
+                npc: "Toblen Stonehill (Humano, chismoso)",
+                hook: "Rumores",
+                secret: "Hermanas Garaele (Suerte), Daran (Huerto) y Halia (Mina) buscan aventureros.",
+                flavor: "El centro social. Cálido, lleno de granjeros. Toblen odia a los Marcas Rojas.",
+                questDetails: "Toblen sirve como nodo central. Si los jugadores no saben qué hacer, él les dirá: 'La Hermana Garaele parecía preocupada' o 'Los Marcas Rojas están buscando pelea'. También menciona que los orcos están atacando viajeros al este (misión del Alcalde)."
+            },
+            {
+                loc: "Suministros Barthen",
+                npc: "Elmar Barthen (Humano, 50s, calvo)",
+                hook: "Paga 10po/jugador",
+                secret: "Odia a los Marcas Rojas. Informa que Gundren iba a buscar la Mina Perdida con sus hermanos.",
+                flavor: "Tienda general. Si Sildar está, sugiere buscar a Iarno en la mansión.",
+                questDetails: "Misión: La Entrega. Simplemente paga a los PJs por llevar el carro. Les advierte que Gundren debería haber llegado ya. Si los PJs preguntan por los hermanos de Gundren (Nundro y Tharden), dice que están acampados en algún lugar de las colinas, esperando el mapa."
+            },
+            {
+                loc: "Escudo de León",
+                npc: "Linene Graywind (Humana, seria)",
+                hook: "Recuperar Suministros (50po)",
+                secret: "Si le devuelven lo robado en la cueva goblin, les da un descuento o 50po.",
+                flavor: "Vende Armas/Armaduras. No vende a cualquiera (desconfiada).",
+                questDetails: "Misión: Bienes Robados. En la Cueva Cragmaw (Cap 1), en la zona de Klarg, hay cajas con el símbolo de un león azul. Si los PJs las traen de vuelta, Linene les pagará 50po y desbloqueará la tienda para comprar armas y armaduras."
+            },
+            {
+                loc: "Huerto de Edermath",
+                npc: "Daran Edermath (Semielfo, +100 años)",
+                hook: "Misión: Viejo Pozo del Búho",
+                secret: "Ex-aventurero. Sospecha de nigromancia en el pozo. Si hay problemas, Daran ayuda en combate (Veterano).",
+                flavor: "Vive en una cabaña tranquila entre manzanos.",
+                questDetails: "Misión: Problemas en el Pozo. Daran ha oído historias de muertos vivientes cerca del Viejo Pozo del Búho (al noreste). Pide a los PJs que investiguen. Allí encontrarán a Hamun Kost, un Mago Rojo de Thay (malvado pero negociable) con 12 zombies. Kost quiere saber el nombre del constructor de la torre (Arthindol) a cambio de irse."
+            },
+            {
+                loc: "Santuario de la Suerte",
+                npc: "Hermana Garaele (Elfa, Arpista)",
+                hook: "Misión: La Banshee Agatha",
+                secret: "Pide que convenzan a Agatha (cerca de Conyberry) de responder una pregunta sobre un libro de hechizos. Da un Peine de Plata como soborno.",
+                flavor: "Pequeño altar de piedra a Tymora.",
+                questDetails: "Misión: El Peine de Plata. Garaele quiere saber la ubicación del libro de hechizos del legendario mago Bowgentle. Agatha la Banshee lo sabe, pero solo responde si se le halaga. Garaele da a los PJs un peine de plata enjoyado. NO ATAQUEN A AGATHA. Es un encuentro social. Si le dan el peine y son educados, ella responderá una pregunta."
+            },
+            {
+                loc: "Bolsa de Mineros",
+                npc: "Halia Thornton (Humana, Ambiciosa)",
+                hook: "Misión: Matar a Vara de Vidrio",
+                secret: "Es agente Zhentarim. Quiere controlar el pueblo. Pide que le traigan las cartas de Vara de Vidrio (evidencia), no al alcalde.",
+                flavor: "Calculadora. Paga bien (100po) por eliminar a la competencia (Marcas Rojas).",
+                questDetails: "Misión: La Oferta de Halia. Ella quiere eliminar a Glasstaff para tomar el control de los Marcas Rojas ella misma (aunque no lo dice). Pide a los PJs que le traigan cualquier correspondencia que encuentren en la Mansión. Las cartas revelan que Iarno Albrek (Glasstaff) trabaja para la Araña Negra. Halia usará esto para chantajear o consolidar poder. Paga 100po."
+            },
+            {
+                loc: "Granja Alderleaf",
+                npc: "Qelline (Halfling) y Carp (Hijo)",
+                hook: "Misión: Reidoth el Druida",
+                secret: "Qelline sabe que Reidoth (Árbol Trueno) conoce la zona. Carp encontró un túnel secreto a la Mansión Tresendar en el bosque.",
+                flavor: "Gente amable y sabia.",
+                questDetails: "Misión: El Druida. Qelline sugiere que Reidoth, un viejo amigo druida, conoce cada rincón del bosque y podría saber dónde está el Castillo Cragmaw. Está en las ruinas de Árbol Trueno. Carp (su hijo) dice haber visto 'bandidos grandes y peludos' (Bugbears) cerca de un túnel en el bosque; es la entrada trasera a la base de los Marcas Rojas."
+            },
+            {
+                loc: "Casa del Alcalde",
+                npc: "Harbin Wester (Humano, Cobarde)",
+                hook: "Misión: Orcos de la Torre",
+                secret: "Niega que los Marcas Rojas sean un problema ('Son un gremio mercenario'). Paga 100po por eliminar orcos en la Torre Wyvern.",
+                flavor: "Edificio con cárcel (vacía). Harbin se esconde tras la puerta si hay peligro.",
+                questDetails: "Misión: Orcos en Wyvern Tor. Harbin quiere que los aventureros se vayan del pueblo para no causar problemas, así que los manda lejos. Hay una banda de orcos en Wyvern Tor liderada por Brughor Axe-Biter (Orco Ogre). Si los matan, Harbin paga 100po de mala gana."
+            },
+            {
+                loc: "El Gigante Dormido",
+                npc: "Marcas Rojas (Matones)",
+                hook: "Pelea Callejera",
+                secret: "Si los jugadores van aquí, ES PELEA FIJA. 4 Rufianes intentarán robarles o matarlos.",
+                flavor: "Taberna sucia en las afueras. Solo para criminales.",
+                questDetails: "Encuentro: No hay misión aquí, solo dolor. Es el bar de los Marcas Rojas. Si los PJs entran, 4 Rufianes los insultarán y atacarán. Es una forma rápida de iniciar el conflicto con la banda si los PJs están buscando acción."
+            }
+        ];
+
+        // DATOS DE CLASES SELECCIONADAS (Monje, Clérigo, Mago)
         const classesData = [
             { 
-                name: "Bárbaro", hitDie: "d12", 
+                name: "Monje", hitDie: "d8", 
+                recommended: "Alta DES y SAB",
                 levels: {
-                    1: [{name: "Furia (x2)", desc: "Bonus. Ventaja FUE. +2 Daño. Resistencia físico."}, {name: "Defensa s/Armadura", desc: "AC = 10 + Des + Con."}],
-                    2: [{name: "Ataque Temerario", desc: "Ventaja al pegar, te pegan con ventaja."}, {name: "Sentido Peligro", desc: "Ventaja en Saves de DES."}],
-                    3: [{name: "Senda Primaria", desc: "Berserker (Ataque extra con fatiga) o Tótem (Oso resiste todo)."}, {name: "Furia (x3)", desc: "3 usos."}],
-                    4: [{name: "Mejora Stat/Dote", desc: "+2 Stat o Dote."}],
-                    5: [{name: "Ataque Extra", desc: "Atacas 2 veces por acción."}, {name: "Movimiento +10", desc: "+10 pies velocidad."}]
-                }
-            },
-            { 
-                name: "Bardo", hitDie: "d8", 
-                levels: {
-                    1: [{name: "Inspiración (d6)", desc: "Bonus. Aliado suma d6 a d20."}, {name: "Conjuros", desc: "4 trucos, 4 nvl 1."}],
-                    2: [{name: "Aprendiz de Mucho", desc: "+1/2 proficiencia en todo lo que no sabes."}, {name: "Canción Descanso", desc: "Curas +1d6 en descanso corto."}],
-                    3: [{name: "Colegio", desc: "Valor (Combate) o Saber (Skills)."}, {name: "Expertise", desc: "x2 proficiencia en 2 skills."}],
-                    4: [{name: "Mejora Stat/Dote", desc: "+2 Stat o Dote."}],
-                    5: [{name: "Inspiración (d8)", desc: "Dado sube a d8. Recuperas en Short Rest."}, {name: "Conjuros Nvl 3", desc: "Patrón Hipnótico."}]
-                }
+                    1: [
+                        {name: "Defensa sin Armadura", desc: "AC = 10 + Mod. DES + Mod. SAB (Sin escudo)."},
+                        {name: "Artes Marciales (d4)", desc: "Puedes usar DES para ataques desarmados/armas de monje. Bonus Action: 1 Golpe Desarmado si atacaste con Acción."}
+                    ],
+                    2: [
+                        {name: "Ki (2 puntos)", desc: "Recuperas en descanso corto. CD Salvación = 8 + prof + SAB."},
+                        {name: "Ráfaga de Golpes", desc: "1 Ki (Bonus): Realiza 2 golpes desarmados."},
+                        {name: "Paciencia", desc: "1 Ki (Bonus): Acción de Esquivar (Dodge)."},
+                        {name: "Paso del Viento", desc: "1 Ki (Bonus): Destrabarse o Correr. Doble salto."},
+                        {name: "Movimiento s/Armadura", desc: "+10 pies de velocidad."}
+                    ],
+                    3: [
+                        {name: "Tradición: Mano Abierta", desc: "Al impactar con Ráfaga, impone efectos: Tirar al suelo (DEX save), Empujar 15 pies (STR save), o No reacciones (Sin save)."},
+                        {name: "Desviar Proyectiles", desc: "Reacción: Reduce daño de proyectil 1d10 + DES + Nivel. Si reduce a 0, puedes devolverlo gastando 1 Ki."},
+                        {name: "Ki (3 puntos)", desc: "Aumenta tu reserva."}
+                    ],
+                    4: [
+                        {name: "Mejora Stat/Dote", desc: "+2 a una stat (Sugg: DES o SAB) o una Dote (Ver pestaña Dotes)."},
+                        {name: "Caída Lenta", desc: "Reacción: Reduce daño de caída en 5 x Nivel."},
+                        {name: "Ki (4 puntos)", desc: ""}
+                    ],
+                    5: [
+                        {name: "Ataque Extra", desc: "Atacas 2 veces por acción."},
+                        {name: "Golpe Aturdidor", desc: "1 Ki al golpear. CON save o Aturdido (Stunned) hasta fin de tu prox turno. ¡Brutal contra jefes!"},
+                        {name: "Artes Marciales (d6)", desc: "Tu dado de daño sube a 1d6."},
+                        {name: "Ki (5 puntos)", desc: ""}
+                    ]
+                },
+                cheatSheet: [
+                    { name: "Combate: Opción 1 (Gratis)", desc: "1 Ataque (Acción) + 1 Golpe Artes Marciales (Bonus). Total: 2 Golpes." },
+                    { name: "Combate: Opción 2 (1 Ki)", desc: "1 Ataque (Acción) + 2 Golpes Ráfaga (Bonus). Total: 3 Golpes." },
+                    { name: "Nota Importante", desc: "¡TODOS los golpes suman tu modificador de Destreza al daño!" }
+                ]
             },
             { 
                 name: "Clérigo", hitDie: "d8", 
+                recommended: "Alta SAB. Dominio Vida (Recomendado)",
+                spellSlots: [
+                    { level: 1, slots: "2 (Nv 1)" },
+                    { level: 2, slots: "3 (Nv 1)" },
+                    { level: 3, slots: "4 (Nv 1), 2 (Nv 2)" },
+                    { level: 4, slots: "4 (Nv 1), 3 (Nv 2)" },
+                    { level: 5, slots: "4 (Nv 1), 3 (Nv 2), 2 (Nv 3)" }
+                ],
                 levels: {
-                    1: [{name: "Dominio", desc: "Vida, Guerra, Luz... Hechizos extra."}, {name: "Conjuros", desc: "Preparas Nivel + SAB."}],
-                    2: [{name: "Canalizar Divinidad", desc: "Expulsar MV o efecto de dominio."}],
-                    3: [{name: "Conjuros Nvl 2", desc: "Arma Espiritual, Rest. Menor."}],
-                    4: [{name: "Mejora Stat/Dote", desc: "+2 Stat o Dote."}],
-                    5: [{name: "Destruir MV", desc: "MV de CR 1/2 mueren al ser expulsados."}, {name: "Conjuros Nvl 3", desc: "Revivir, Espíritus Guardianes."}]
-                }
-            },
-            { 
-                name: "Druida", hitDie: "d8", 
-                levels: {
-                    1: [{name: "Druídico", desc: "Idioma secreto."}, {name: "Conjuros", desc: "Preparas Nivel + SAB."}],
-                    2: [{name: "Forma Salvaje", desc: "Transformarse en bestia (CR 1/4)."}, {name: "Círculo", desc: "Tierra (Magia) o Luna (Combate bestial)."}],
-                    3: [{name: "Conjuros Nvl 2", desc: "Piel de Roble, Paso sin Rastro."}],
-                    4: [{name: "Forma Salvaje (Agua)", desc: "Bestias que nadan (CR 1/2)."}, {name: "Mejora Stat/Dote", desc: "+2 Stat o Dote."}],
-                    5: [{name: "Conjuros Nvl 3", desc: "Invocar Animales, Llamar al Rayo."}]
-                }
-            },
-            { 
-                name: "Guerrero", hitDie: "d10", 
-                levels: {
-                    1: [{name: "Estilo Combate", desc: "+2 Daño, +1 AC, o +2 Ataque arco."}, {name: "Tomar Aliento", desc: "Bonus. Curas 1d10+Nivel."}],
-                    2: [{name: "Acción Súbita", desc: "1 Acción extra por descanso corto."}],
-                    3: [{name: "Arquetipo", desc: "Campeón (Crít 19), Batalla (Maniobras), Eldritch (Magia)."}],
-                    4: [{name: "Mejora Stat/Dote", desc: "+2 Stat o Dote."}],
-                    5: [{name: "Ataque Extra", desc: "Atacas 2 veces por acción."}]
-                }
-            },
-            { 
-                name: "Monje", hitDie: "d8", 
-                levels: {
-                    1: [{name: "Defensa s/Armadura", desc: "AC = 10 + Des + Sab."}, {name: "Artes Marciales", desc: "Golpe extra como bonus."}],
-                    2: [{name: "Ki", desc: "Paso del Viento, Paciencia, Ráfaga."}, {name: "Movimiento", desc: "+10 pies."}],
-                    3: [{name: "Tradición", desc: "Mano Abierta, Sombra, Elementos."}, {name: "Desviar Proyectil", desc: "Reacción. Reduces daño flecha."}],
-                    4: [{name: "Caída Lenta", desc: "Reduces daño caída."}, {name: "Mejora Stat/Dote", desc: "+2 Stat o Dote."}],
-                    5: [{name: "Ataque Extra", desc: "Atacas 2 veces."}, {name: "Golpe Aturdidor", desc: "Gasta Ki para aturdir (Stun) enemigo."}]
-                }
-            },
-            { 
-                name: "Paladín", hitDie: "d10", 
-                levels: {
-                    1: [{name: "Sentido Divino", desc: "Detectas Mal/Bien."}, {name: "Imponer Manos", desc: "Pool de curación."}],
-                    2: [{name: "Divine Smite", desc: "Gasta slot para daño radiante extra."}, {name: "Estilo Combate", desc: "Defensa, Duelo, etc."}],
-                    3: [{name: "Salud Divina", desc: "Inmune enfermedad."}, {name: "Juramento", desc: "Devoción, Venganza, Antiguos."}],
-                    4: [{name: "Mejora Stat/Dote", desc: "+2 Stat o Dote."}],
-                    5: [{name: "Ataque Extra", desc: "Atacas 2 veces."}, {name: "Conjuros Nvl 2", desc: "Find Steed."}]
-                }
-            },
-            { 
-                name: "Pícaro", hitDie: "d8", 
-                levels: {
-                    1: [{name: "Ataque Furtivo", desc: "+1d6 daño con Ventaja/Aliado."}, {name: "Expertise", desc: "x2 proficiencia."}],
-                    2: [{name: "Acción Astuta", desc: "Bonus: Correr, Destrabar, Esconder."}],
-                    3: [{name: "Arquetipo", desc: "Ladrón, Asesino, Arcane Trickster."}, {name: "Furtivo (2d6)", desc: "+2d6 daño."}],
-                    4: [{name: "Mejora Stat/Dote", desc: "+2 Stat o Dote."}],
-                    5: [{name: "Esquiva Asombrosa", desc: "Reacción. Reduces daño a la mitad."}, {name: "Furtivo (3d6)", desc: "+3d6 daño."}]
-                }
-            },
-            { 
-                name: "Hechicero", hitDie: "d6", 
-                levels: {
-                    1: [{name: "Origen", desc: "Dracónico (+AC) o Salvaje."}, {name: "Conjuros", desc: "Magia innata."}],
-                    2: [{name: "Fuente de Magia", desc: "Crear slots con puntos."}],
-                    3: [{name: "Metamagia", desc: "Sutil, Gemelo, Potenciado."}],
-                    4: [{name: "Mejora Stat/Dote", desc: "+2 Stat o Dote."}],
-                    5: [{name: "Conjuros Nvl 3", desc: "BOLA DE FUEGO, Celeridad."}]
-                }
-            },
-            { 
-                name: "Brujo", hitDie: "d8", 
-                levels: {
-                    1: [{name: "Patrón", desc: "Archifey, Fiend, GOO."}, {name: "Magia Pacto", desc: "Slots recargan en Short Rest."}],
-                    2: [{name: "Invocaciones", desc: "Poderes pasivos (ej. Visión Oscura)."}],
-                    3: [{name: "Pacto", desc: "Cadena, Hoja, Tomo."}],
-                    4: [{name: "Mejora Stat/Dote", desc: "+2 Stat o Dote."}],
-                    5: [{name: "Slots Nvl 3", desc: "Todo se lanza a nivel 3."}, {name: "Invocación Extra", desc: "Una más."}]
-                }
+                    1: [
+                        {name: "Conjuros (Nvl 1)", desc: "Preparas [Nivel + Mod. SAB] hechizos al día. CD = 8 + prof + SAB."},
+                        {name: "Dominio de la Vida", desc: "Competencia armadura pesada. Discípulo de la Vida: Curas extra (2 + nivel de hechizo) HP."}
+                    ],
+                    2: [
+                        {name: "Canalizar Divinidad (1/descanso)", desc: "Expulsar Muertos Vivientes (Acción): MV a 30 pies huyen si fallan SAB."},
+                        {name: "Preservar Vida (Vida)", desc: "Canalizar: Cura 5 x Nivel HP repartidos entre aliados (hasta mitad de su vida max)."}
+                    ],
+                    3: [
+                        {name: "Conjuros (Nvl 2)", desc: "Desbloqueas slots de nivel 2."}
+                    ],
+                    4: [
+                        {name: "Mejora Stat/Dote", desc: "+2 a una stat (Sugg: SAB) o Dote (Ver pestaña Dotes)."}
+                    ],
+                    5: [
+                        {name: "Destruir Muertos Vivientes", desc: "Cuando expulsas MV, si son CR 1/2 o menos, se destruyen instantáneamente."},
+                        {name: "Conjuros (Nvl 3)", desc: "Desbloqueas slots de nivel 3 (Revivir, Espíritus Guardianes)."}
+                    ]
+                },
+                cheatSheet: [
+                    { name: "Trucos", desc: "Llama Sagrada (1d8 Dex Save), Guía (+1d4 skill), Taumaturgia." },
+                    { name: "Nvl 1 (Esenciales)", desc: "Bendición (+1d4 atk/save a 3 aliados), Curar Heridas (1d8+SAB), Palabra de Curación (Bonus, 1d4+SAB), Guiding Bolt (4d6 + Ventaja prox ataque)." },
+                    { name: "Nvl 2 (Esenciales)", desc: "Arma Espiritual (Bonus, 1d8+SAB Force), Lesser Restoration (Cura ceguera/veneno/etc), Hold Person (Paraliza humanoide)." },
+                    { name: "Nvl 3 (Esenciales)", desc: "Espíritus Guardianes (3d8 daño área sostenido), Revivir (300po diamante, resucita si murió hace <1 min)." }
+                ]
             },
             { 
                 name: "Mago", hitDie: "d6", 
+                recommended: "Alta INT. Escuela Evocación",
+                spellSlots: [
+                    { level: 1, slots: "2 (Nv 1)" },
+                    { level: 2, slots: "3 (Nv 1)" },
+                    { level: 3, slots: "4 (Nv 1), 2 (Nv 2)" },
+                    { level: 4, slots: "4 (Nv 1), 3 (Nv 2)" },
+                    { level: 5, slots: "4 (Nv 1), 3 (Nv 2), 2 (Nv 3)" }
+                ],
                 levels: {
-                    1: [{name: "Recuperación", desc: "Recupera slots en Short Rest."}, {name: "Libro", desc: "Necesitas libro para magias."}],
-                    2: [{name: "Tradición", desc: "Evocación, Abjuración, Adivinación..."}],
-                    3: [{name: "Conjuros Nvl 2", desc: "Paso Brumoso, Invisibilidad."}],
-                    4: [{name: "Mejora Stat/Dote", desc: "+2 Stat o Dote."}],
-                    5: [{name: "Conjuros Nvl 3", desc: "BOLA DE FUEGO, Contrahechizo."}]
-                }
-            },
-            { 
-                name: "Explorador", hitDie: "d10", 
-                levels: {
-                    1: [{name: "Enemigo Pred.", desc: "Ventaja rastrear tipo enemigo."}, {name: "Explorador Nat.", desc: "Experto terreno."}],
-                    2: [{name: "Estilo Combate", desc: "Arqueria, Dos armas."}, {name: "Conjuros", desc: "Marca del Cazador."}],
-                    3: [{name: "Arquetipo", desc: "Cazador (Daño) o Bestias (Mascota)."}, {name: "Sentido Prim.", desc: "Detectar monstruos."}],
-                    4: [{name: "Mejora Stat/Dote", desc: "+2 Stat o Dote."}],
-                    5: [{name: "Ataque Extra", desc: "Atacas 2 veces."}, {name: "Conjuros Nvl 2", desc: "Pass without Trace."}]
-                }
+                    1: [
+                        {name: "Conjuros (Nvl 1)", desc: "Preparas [Nivel + Mod. INT]. CD = 8 + prof + INT. Recuperación Arcana: En descanso corto recuperas [Nivel/2] slots."},
+                        {name: "Libro de Hechizos", desc: "Necesitas tu libro. 6 hechizos al inicio."}
+                    ],
+                    2: [
+                        {name: "Escuela Evocación", desc: "Esculpir Hechizos: Puedes elegir [1 + Nivel de Hechizo] criaturas para que pasen su salvación automáticamente y no reciban daño (ej. Bola de Fuego segura)."}
+                    ],
+                    3: [
+                        {name: "Conjuros (Nvl 2)", desc: "Desbloqueas slots de nivel 2."}
+                    ],
+                    4: [
+                        {name: "Mejora Stat/Dote", desc: "+2 a una stat (Sugg: INT) o Dote (Ver pestaña Dotes)."}
+                    ],
+                    5: [
+                        {name: "Conjuros (Nvl 3)", desc: "Desbloqueas slots de nivel 3 (Bola de Fuego, Counterspell)."}
+                    ]
+                },
+                cheatSheet: [
+                    { name: "Trucos", desc: "Descarga de Fuego (1d10), Mano de Mago, Ilusión Menor." },
+                    { name: "Nvl 1 (Esenciales)", desc: "Armadura de Mago (AC 13+Dex), Escudo (+5 AC Reacción), Dormir (5d8 HP duermen), Misil Mágico (3x 1d4+1 auto-hit), Detectar Magia." },
+                    { name: "Nvl 2 (Esenciales)", desc: "Paso Brumoso (Teleport 30ft Bonus), Telaraña (Control área), Invisibilidad, Rayo Abrasador (3x 2d6 Fuego)." },
+                    { name: "Nvl 3 (Esenciales)", desc: "BOLA DE FUEGO (8d6 área), Contrahechizo (Reacción anula magia), Volar." }
+                ]
             }
         ];
 
@@ -347,27 +459,27 @@
             {
                 chapter: "Cap 1: Goblins",
                 mobs: [
-                    { name: "Goblin", hp: "7 (2d6)", ac: 15, atk: "+4 (1d6+2)", notes: "Bonus: Esconder/Destrabar.", tactic3: "Usa 3 max. Cuidado flechas." },
-                    { name: "Lobo", hp: "11 (2d8+2)", ac: 13, atk: "+4 (2d4+2)", notes: "Derribo (STR 11).", tactic3: "Encadenados al inicio." },
-                    { name: "Klarg (Bugbear)", hp: "27 (5d8+5)", ac: 16, atk: "+6 (2d8+2)", notes: "Sorpresa: +2d6 daño.", tactic3: "Borracho (Desventaja)." }
+                    { name: "Goblin", desc: "Pequeño humanoide de piel verduzca, cara plana y dientes afilados. Viste harapos de cuero.", hp: "7 (2d6)", ac: 15, atk: "+4 (1d6+2)", notes: "Bonus: Esconder/Destrabar.", tactic3: "Usa 3 max. Cuidado flechas." },
+                    { name: "Lobo", desc: "Bestia canina de pelaje gris enmarañado y ojos amarillos que brillan con hambre.", hp: "11 (2d8+2)", ac: 13, atk: "+4 (2d4+2)", notes: "Derribo (STR 11).", tactic3: "Encadenados al inicio." },
+                    { name: "Klarg (Bugbear)", desc: "Enorme humanoide peludo (2m), con cara de oso aplastada y un olor a animal mojado insoportable.", hp: "27 (5d8+5)", ac: 16, atk: "+6 (2d8+2)", notes: "Sorpresa: +2d6 daño.", tactic3: "Borracho (Desventaja)." }
                 ]
             },
             {
                 chapter: "Cap 2: Rufianes",
                 mobs: [
-                    { name: "Marca Roja", hp: "16 (3d8+3)", ac: 14, atk: "+4 (1d6+2)", notes: "Multiataque (2 golpes).", tactic3: "Quitar Multiataque." },
-                    { name: "Nothic", hp: "45 (6d8+18)", ac: 15, atk: "+4 (1d6+3)", notes: "Mirada Necrótica (CON 12).", tactic3: "Social. Negocia secretos." },
-                    { name: "Esqueleto", hp: "13 (2d8+4)", ac: 13, atk: "+4 (1d6+2)", notes: "Vuln. Contundente.", tactic3: "Estándar." },
-                    { name: "Iarno (Mago)", hp: "22 (5d8)", ac: "12 (15)", atk: "+3", notes: "Escudo (+5 AC), Misil Mágico.", tactic3: "Huye al recibir daño." }
+                    { name: "Marca Roja", desc: "Matón humano con armadura de cuero tachonado y una capa roja sucia y raída.", hp: "16 (3d8+3)", ac: 14, atk: "+4 (1d6+2)", notes: "Multiataque (2 golpes).", tactic3: "Quitar Multiataque." },
+                    { name: "Nothic", desc: "Aberración jorobada de piel verde escamosa, garras largas y UN SOLO OJO gigante que brilla con locura violeta.", hp: "45 (6d8+18)", ac: 15, atk: "+4 (1d6+3)", notes: "Mirada Necrótica (CON 12).", tactic3: "Social. Negocia secretos." },
+                    { name: "Esqueleto", desc: "Montón de huesos animados por magia negra, a veces con restos de armadura oxidada.", hp: "13 (2d8+4)", ac: 13, atk: "+4 (1d6+2)", notes: "Vuln. Contundente.", tactic3: "Estándar." },
+                    { name: "Iarno (Mago)", desc: "Humano de barba corta y oscura, túnica elegante y un bastón hecho de vidrio sólido.", hp: "22 (5d8)", ac: "12 (15)", atk: "+3", notes: "Escudo (+5 AC), Misil Mágico.", tactic3: "Huye al recibir daño." }
                 ]
             },
             {
                 chapter: "Cap 3 & 4",
                 mobs: [
-                    { name: "Hobgoblin", hp: "11 (2d8+2)", ac: 18, atk: "+3 (1d8+1)", notes: "Ventaja Marcial (+2d6).", tactic3: "AC 18 es muy alta." },
-                    { name: "Oso Lechuza", hp: "59 (7d10+21)", ac: 13, atk: "+7 (1d10+5)", notes: "Multiataque. Muy fuerte.", tactic3: "TPK posible. Huir." },
-                    { name: "Venomfang", hp: "136", ac: 19, atk: "Aliento", notes: "12d6 Veneno.", tactic3: "NO PELEAR. Social." },
-                    { name: "Araña Gig.", hp: "26", ac: 14, atk: "+5 (1d8+3)", notes: "Veneno y Telaraña.", tactic3: "Molesta pero ok." }
+                    { name: "Hobgoblin", desc: "Humanoide alto de piel roja/naranja y nariz azulada. Armadura impecable y disciplinado.", hp: "11 (2d8+2)", ac: 18, atk: "+3 (1d8+1)", notes: "Ventaja Marcial: +2d6 daño extra (1/turno) si el objetivo tiene un aliado del hobgoblin a 5 pies.", tactic3: "AC 18 es muy alta." },
+                    { name: "Oso Lechuza", desc: "Monstruosidad masiva con cuerpo de oso pardo y cabeza de lechuza gigante. Su pico parte huesos.", hp: "59 (7d10+21)", ac: 13, atk: "+7 (1d10+5)", notes: "Multiataque. Muy fuerte.", tactic3: "TPK posible. Huir." },
+                    { name: "Venomfang", desc: "Dragón de escamas verde esmeralda. Una cresta recorre su espalda. Emana un fuerte olor a cloro y ácido.", hp: "136", ac: 19, atk: "Aliento", notes: "12d6 Veneno.", tactic3: "NO PELEAR. Social." },
+                    { name: "Araña Gig.", desc: "Arácnido del tamaño de un caballo, negro y peludo. Sus mandíbulas gotean icor verde.", hp: "26", ac: 14, atk: "+5 (1d8+3)", notes: "Veneno y Telaraña.", tactic3: "Molesta pero ok." }
                 ]
             }
         ];
@@ -386,7 +498,7 @@
                             <IconInfo size={24} className="shrink-0" />
                             {title}
                         </h3>
-                        <p className="text-gray-200 leading-relaxed text-base">
+                        <p className="text-gray-200 leading-relaxed text-base whitespace-pre-wrap">
                             {content}
                         </p>
                         <div className="mt-6 text-center">
@@ -456,7 +568,7 @@
         );
 
         const App = () => {
-            const [activeTab, setActiveTab] = useState('classes');
+            const [activeTab, setActiveTab] = useState('phandalin');
             const [selectedShop, setSelectedShop] = useState("Suministros Barthen");
             const [modalInfo, setModalInfo] = useState({ title: null, content: null });
             const [numPlayers, setNumPlayers] = useState(3);
@@ -483,8 +595,10 @@
                     <nav className="sticky top-0 z-20 bg-gray-900/95 backdrop-blur border-b border-gray-700 shadow-lg">
                         <div className="flex overflow-x-auto hide-scrollbar md:justify-center">
                             <TabButton active={activeTab === 'story'} onClick={() => setActiveTab('story')} icon={IconBookOpen} label="Historia" />
+                            <TabButton active={activeTab === 'phandalin'} onClick={() => setActiveTab('phandalin')} icon={IconHome} label="Pueblo" />
                             <TabButton active={activeTab === 'rules'} onClick={() => setActiveTab('rules')} icon={IconGavel} label="Reglas" />
                             <TabButton active={activeTab === 'classes'} onClick={() => setActiveTab('classes')} icon={IconUsers} label="Clases" />
+                            <TabButton active={activeTab === 'feats'} onClick={() => setActiveTab('feats')} icon={IconStar} label="Dotes" />
                             <TabButton active={activeTab === 'shops'} onClick={() => setActiveTab('shops')} icon={IconShoppingBag} label="Tiendas" />
                             <TabButton active={activeTab === 'monsters'} onClick={() => setActiveTab('monsters')} icon={IconSkull} label="Bestiario" />
                         </div>
@@ -503,12 +617,82 @@
                                             {chapter.keyEvents.map((event, i) => (
                                                 <li key={i} className="flex gap-2 items-start text-sm md:text-base">
                                                     <span className="text-yellow-500 mt-0.5">➤</span>
-                                                    <span>{event}</span>
+                                                    <div>
+                                                        <strong className="text-yellow-100 block">{event.title}</strong>
+                                                        <span className="text-gray-400 text-xs md:text-sm">{event.desc}</span>
+                                                    </div>
                                                 </li>
                                             ))}
                                         </ul>
+                                        {/* DM Tips */}
+                                        <div className="bg-blue-900/20 p-3 rounded border border-blue-500/30 mt-4">
+                                            <h4 className="text-blue-400 font-bold text-xs uppercase mb-2 flex items-center gap-1">
+                                                <IconInfo size={14} /> Tips del DM
+                                            </h4>
+                                            <ul className="list-disc list-inside space-y-1">
+                                                {chapter.dmTips.map((tip, tIdx) => (
+                                                    <li key={tIdx} className="text-xs text-gray-300 leading-relaxed">
+                                                        {tip}
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
                                     </SectionCard>
                                 ))}
+                            </div>
+                        )}
+
+                        {/* TAB: PUEBLO (PHANDALIN) */}
+                        {activeTab === 'phandalin' && (
+                            <div className="animate-fade-in pb-10 space-y-4">
+                                <div className="bg-green-900/30 p-3 rounded border border-green-500/30 mb-2">
+                                    <h4 className="text-green-400 font-bold text-sm mb-1">Guía Rápida de Exploración</h4>
+                                    <p className="text-xs text-green-100">
+                                        Tus jugadores van a querer hablar con todos. Aquí tienes a los NPCs clave, qué quieren y qué secretos guardan.
+                                    </p>
+                                </div>
+                                
+                                <div className="grid gap-3 md:grid-cols-2">
+                                    {phandalinData.map((loc, idx) => (
+                                        <div key={idx} className="bg-gray-800 rounded p-4 border border-gray-700 hover:border-yellow-500 transition-colors shadow-lg flex flex-col justify-between">
+                                            <div>
+                                                <div className="flex justify-between items-start mb-2 border-b border-gray-700 pb-2">
+                                                    <h4 className="font-bold text-yellow-500 text-base">{loc.loc}</h4>
+                                                </div>
+                                                
+                                                <div className="space-y-2 text-sm mb-3">
+                                                    <p className="flex gap-2">
+                                                        <span className="text-blue-400 font-bold min-w-[35px]">NPC:</span>
+                                                        <span className="text-gray-200">{loc.npc}</span>
+                                                    </p>
+                                                    <p className="flex gap-2">
+                                                        <span className="text-green-400 font-bold min-w-[35px]">Misión:</span>
+                                                        <span className="text-gray-300">{loc.hook}</span>
+                                                    </p>
+                                                    <div className="bg-gray-900/50 p-2 rounded mt-2 border-l-2 border-purple-500">
+                                                        <p className="text-xs text-purple-200 italic">
+                                                            <strong>Secreto:</strong> {loc.secret}
+                                                        </p>
+                                                    </div>
+                                                    <p className="text-xs text-gray-500 mt-1 border-t border-gray-700 pt-1">
+                                                        {loc.flavor}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            
+                                            {/* Botón Detalles de Misión */}
+                                            {loc.questDetails && (
+                                                <button 
+                                                    onClick={() => openModal(`Misión: ${loc.hook}`, loc.questDetails)}
+                                                    className="mt-2 w-full py-2 bg-gray-700 hover:bg-gray-600 text-xs font-bold text-gray-300 rounded border border-gray-600 flex items-center justify-center gap-2 transition-colors"
+                                                >
+                                                    <IconScroll size={14} />
+                                                    📜 Detalles de Misión
+                                                </button>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         )}
 
@@ -577,18 +761,51 @@
                             </div>
                         )}
 
-                        {/* TAB: CLASES */}
+                        {/* TAB: CLASES (Actualizada Monje, Clérigo, Mago) */}
                         {activeTab === 'classes' && (
                             <div className="animate-fade-in pb-10">
                                 <div className="bg-blue-900/30 p-3 rounded mb-4 border border-blue-500/50 flex gap-3 items-center">
                                     <IconAlertTriangle className="text-blue-400 shrink-0" size={20} />
                                     <p className="text-xs text-blue-100">
-                                        <strong>Tip:</strong> Toca las habilidades para ver detalles. Incluye Nivel 5.
+                                        <strong>Nota:</strong> Lista optimizada para las 3 clases de la mesa. Incluye tabla de espacios de conjuro (Slots).
                                     </p>
                                 </div>
                                 <div className="grid gap-2">
                                     {classesData.map((cls, idx) => (
                                         <Accordion key={idx} title={cls.name} sub={cls.hitDie}>
+                                            {/* Tabla de Slots si existe */}
+                                            {cls.spellSlots && (
+                                                <div className="mb-4 bg-gray-900 border border-blue-500/50 rounded p-3">
+                                                    <h4 className="text-blue-400 font-bold text-sm mb-2 flex items-center gap-2">
+                                                        <IconSparkles size={14}/> Espacios de Conjuro (Slots)
+                                                    </h4>
+                                                    <div className="grid gap-1">
+                                                        {cls.spellSlots.map((levelSlot, sIdx) => (
+                                                            <div key={sIdx} className="text-xs flex justify-between border-b border-gray-800 pb-1">
+                                                                <span className="text-gray-400 font-bold">Nivel {levelSlot.level}:</span>
+                                                                <span className="text-white">{levelSlot.slots}</span>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {/* Grimorio Rápido si existe */}
+                                            {cls.cheatSheet && (
+                                                <div className="mb-4 bg-gray-900 border border-purple-500/50 rounded p-3">
+                                                    <h4 className="text-purple-400 font-bold text-sm mb-2 flex items-center gap-2">
+                                                        <IconFlame size={14}/> Grimorio Rápido (Nvl 1-5)
+                                                    </h4>
+                                                    <div className="space-y-2">
+                                                        {cls.cheatSheet.map((spell, sIdx) => (
+                                                            <div key={sIdx} className="text-xs">
+                                                                <span className="text-white font-bold">{spell.name}:</span> <span className="text-gray-400">{spell.desc}</span>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                                                 {[1, 2, 3, 4, 5].map(lvl => (
                                                     <div key={lvl} className="bg-gray-900/50 p-2 rounded">
@@ -605,6 +822,29 @@
                                                 ))}
                                             </div>
                                         </Accordion>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* TAB: DOTES */}
+                        {activeTab === 'feats' && (
+                            <div className="animate-fade-in pb-10">
+                                <div className="bg-yellow-900/30 p-3 rounded mb-4 border border-yellow-500/50 flex gap-3 items-center">
+                                    <IconStar className="text-yellow-400 shrink-0" size={20} />
+                                    <p className="text-xs text-yellow-100">
+                                        <strong>Nivel 4:</strong> Pueden elegir una Dote en lugar de subir características (+2 Stat).
+                                    </p>
+                                </div>
+                                <div className="grid gap-3 md:grid-cols-2">
+                                    {featsData.map((feat, idx) => (
+                                        <div key={idx} className="bg-gray-800 rounded p-3 border border-gray-700 hover:border-yellow-500 transition-colors">
+                                            <div className="flex justify-between items-start mb-2">
+                                                <h4 className="font-bold text-white text-sm">{feat.name}</h4>
+                                                <span className="text-[10px] bg-gray-700 text-gray-300 px-2 py-0.5 rounded-full">{feat.type}</span>
+                                            </div>
+                                            <p className="text-gray-400 text-xs leading-relaxed">{feat.desc}</p>
+                                        </div>
                                     ))}
                                 </div>
                             </div>
@@ -695,6 +935,12 @@
                                     </div>
                                 </div>
 
+                                <div className="flex justify-end mb-2 px-2">
+                                    <p className="text-[10px] text-gray-500 italic">
+                                        * Nota: Atk +X (impacto) / (YdZ+W) (daño)
+                                    </p>
+                                </div>
+
                                 {monstersData.map((section, idx) => (
                                     <div key={idx}>
                                         <h3 className="text-lg font-bold text-yellow-500 mb-2 border-b border-gray-700 pb-1">{section.chapter}</h3>
@@ -711,6 +957,11 @@
                                                             <div className="bg-gray-700 px-1.5 py-0.5 rounded text-[10px] text-green-400 font-mono">HP:{mob.hp}</div>
                                                         </div>
                                                     </div>
+                                                    
+                                                    {/* Descripción Visual */}
+                                                    <p className="text-xs text-gray-400 italic mb-2 border-b border-gray-700/50 pb-1 relative z-10 leading-snug">
+                                                        "{mob.desc}"
+                                                    </p>
                                                     
                                                     <div className="space-y-1 text-sm relative z-10">
                                                         <p className="text-xs"><span className="text-gray-500">Atk:</span> <span className="text-gray-300">{mob.atk}</span></p>
